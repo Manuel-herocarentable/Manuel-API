@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manuel API</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 40px 20px;
+      color: #1f2937;
+    }
+
+    .contenedor {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      color: #2563eb;
+      margin-bottom: 5px;
+    }
+
+    .autor {
+      font-weight: bold;
+      color: #6b7280;
+      margin-top: 0;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      background: #e0e7ff;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <h1>Mi primera API con Node.js</h1>
+    <p class="autor">Practicante: Manuel Horecarentable</p>
+    <p>
+      Este proyecto es una API creada con Node.js y Express. Ofrece varios
+      endpoints para consultar usuarios y sirve esta página HTML.
+    </p>
+
+    <button id="btnUsuarios">Cargar usuarios</button>
+
+    <ul id="listaUsuarios"></ul>
+  </div>
+
+  <script>
+    const boton = document.getElementById("btnUsuarios");
+    const lista = document.getElementById("listaUsuarios");
+
+    boton.addEventListener("click", async () => {
+      const respuesta = await fetch("/usuarios");
+      const usuarios = await respuesta.json();
+
+      lista.innerHTML = "";
+      usuarios.forEach((u) => {
+        const li = document.createElement("li");
+        li.textContent = `${u.id} - ${u.nombre}`;
+        lista.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
