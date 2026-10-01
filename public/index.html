@@ -65,6 +65,10 @@
       padding: 12px;
       border-radius: 8px;
     }
+
+    .error {
+      color: #dc2626;
+    }
   </style>
 </head>
 <body>
@@ -76,26 +80,42 @@
       endpoints para consultar usuarios y sirve esta página HTML.
     </p>
 
-    <button id="btnUsuarios">Cargar usuarios</button>
+    <button id="btnActualizar">Actualizar usuarios</button>
 
     <ul id="listaUsuarios"></ul>
   </div>
 
   <script>
-    const boton = document.getElementById("btnUsuarios");
     const lista = document.getElementById("listaUsuarios");
+    const boton = document.getElementById("btnActualizar");
 
-    boton.addEventListener("click", async () => {
-      const respuesta = await fetch("/usuarios");
-      const usuarios = await respuesta.json();
+    async function cargarUsuarios() {
+      try {
+        const respuesta = await fetch("/usuarios");
 
-      lista.innerHTML = "";
-      usuarios.forEach((u) => {
-        const li = document.createElement("li");
-        li.textContent = `${u.id} - ${u.nombre}`;
-        lista.appendChild(li);
-      });
-    });
+        if (!respuesta.ok) {
+          throw new Error("Error " + respuesta.status);
+        }
+
+        const usuarios = await respuesta.json();
+
+        lista.innerHTML = "";
+        usuarios.forEach((u) => {
+          const li = document.createElement("li");
+          li.textContent = `${u.id} - ${u.nombre}`;
+          lista.appendChild(li);
+        });
+      } catch (error) {
+        lista.innerHTML = '<li class="error">No se pudieron cargar los usuarios</li>';
+        console.error(error);
+      }
+    }
+
+    // Se ejecuta automáticamente al abrir la página
+    cargarUsuarios();
+
+    // El botón vuelve a consultar la API
+    boton.addEventListener("click", cargarUsuarios);
   </script>
 </body>
 </html>
