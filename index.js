@@ -21,6 +21,12 @@ const usuarios = [
   { id: 3, nombre: "Pedro" },
 ];
 
+const productos = [
+  { id: 1, nombre: "Pizza", precio: 30000 },
+  { id: 2, nombre: "Hamburguesa", precio: 25000 },
+  { id: 3, nombre: "Coca-Cola", precio: 10000 },
+];
+
 app.get("/saludo", (req, res) => {
   res.json({ mensaje: "Hola desde la API de Manuel" });
 });
@@ -48,6 +54,11 @@ app.post("/usuarios", (req, res) => {
   const nuevo = { id: usuarios.length + 1, nombre };
   usuarios.push(nuevo);
   res.status(201).json(nuevo);
+});
+
+// Listar todos los productos
+app.get("/productos", (req, res) => {
+  res.json(productos);
 });
 
 app.listen(PORT, () => {
